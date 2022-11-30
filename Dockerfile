@@ -10,6 +10,15 @@ FROM alpine
 
 COPY --from=builder /app/caddy /usr/bin/caddy
 
-ARG PATH
-VOLUME /etc/naiveproxy
-CMD /usr/bin/caddy run --config ${PATH}
+# See https://caddyserver.com/docs/conventions#file-locations for details
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 443/udp
+EXPOSE 2019
+
+WORKDIR /srv
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
