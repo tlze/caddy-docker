@@ -3,16 +3,15 @@ WORKDIR /app
 
 RUN apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community --no-cache git go
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest && \
-        ~/go/bin/xcaddy build --with github.com/caddyserver/forwardproxy@caddy2=github.com/klzgrad/forwardproxy@naive \
-        --with github.com/mholt/caddy-webdav
+        ~/go/bin/xcaddy build \
+        --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive \
+        --with github.com/mholt/caddy-webdav \
+        --with github.com/caddy-dns/cloudflare \
+        --with github.com/caddy-dns/alidns
 
 FROM alpine
 
 COPY --from=builder /app/caddy /usr/bin/caddy
-
-# See https://caddyserver.com/docs/conventions#file-locations for details
-ENV XDG_CONFIG_HOME /config
-ENV XDG_DATA_HOME /data
 
 EXPOSE 80
 EXPOSE 443
