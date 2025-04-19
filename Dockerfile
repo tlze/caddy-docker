@@ -8,8 +8,6 @@ FROM caddy:${CADDY_VERSION}-builder-alpine AS builder
 RUN xcaddy build \
     --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive \
     --with github.com/mholt/caddy-webdav \
-    --with github.com/caddy-dns/cloudflare \
-    --with github.com/caddy-dns/alidns \
     --with github.com/mholt/caddy-ratelimit
 
 # Stage 2: Create the final image
